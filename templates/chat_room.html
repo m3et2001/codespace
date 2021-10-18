@@ -143,7 +143,9 @@
 
       console.log(username);
       let con = false;
-      const ws = new WebSocket("ws://localhost:8000/ws/chat/" + username + "/");
+      const ws = new WebSocket("ws://"
+                               + window.location.host+
+                               "/ws/chat/" + username + "/");
       //const ws = new WebSocket('wss://0c70-42-106-36-237.ngrok.io/ws/chat/'+username+'/');
       ws.onopen = function (e) {
         console.log("connection established");
