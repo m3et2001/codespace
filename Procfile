@@ -1,1 +1,1 @@
-web: gunicorn FTC_project.wsgi --log-file -
+web: gunicorn FTC_project.asgi --log-file -
