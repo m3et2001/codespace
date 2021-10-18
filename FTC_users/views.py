@@ -106,7 +106,7 @@ def send_mail_user(email,token):
 
     subject="Confirmation Mail"
     print(token)
-    message=f"Please click the link to verify your mail http://127.0.0.1:8000/email-verification/{token}"
+    message=f"Please click the link to verify your mail https://f-t-c.herokuapp.com/email-verification/{token}"
     from_email=settings.EMAIL_HOST_USER
     recipient_list=[email]
     send_mail(subject=subject,message=message,from_email=from_email,recipient_list=recipient_list)
