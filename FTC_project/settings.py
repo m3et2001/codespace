@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-2c9u_&eagq4)ed($854c_-cpw2(#u7yhcv1l=_)#mzakb6)=he
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','f-t-c-2.herokuapp.com']
+ALLOWED_HOSTS = [*]
 
 
 # Application definition
@@ -67,7 +67,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'FTC_project.urls'
 
-django.setup()
+# django.setup()
 
 TEMPLATES = [
     {
@@ -105,15 +105,15 @@ db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
 # DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",
-        #"CONFIG" : {
-        #    'hosts' : [('127.0.0.1',6379)],
-        #}
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.InMemoryChannelLayer",
+#         #"CONFIG" : {
+#         #    'hosts' : [('127.0.0.1',6379)],
+#         #}
 
-    }
-}
+#     }
+# }
 
 
 # Password validation
@@ -153,14 +153,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR , 'media')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR , 'static'),
+#     os.path.join(BASE_DIR , 'static'),
 ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        },
+    },
+}
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
