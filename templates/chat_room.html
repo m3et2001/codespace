@@ -144,9 +144,8 @@
       console.log(username);
       let con = false;
       var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-      const ws = new WebSocket(ws_scheme +
-                               + window.location.host+
-                               "/ws/chat/" + username + "/");
+      const ws = new WebSocket(ws_scheme +"://f-t-c.herokuapp.com/ws"
+                               +"/chat/" + username + "/");
       //const ws = new WebSocket('wss://0c70-42-106-36-237.ngrok.io/ws/chat/'+username+'/');
       ws.onopen = function (e) {
         console.log("connection established");
