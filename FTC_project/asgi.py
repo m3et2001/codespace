@@ -15,7 +15,7 @@ from django.urls import path
 from FTC_users.consumers import *
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'FTC_project.settings')
-
+django.setup()
 application = get_asgi_application()
 
 ws_patterns=[
@@ -25,6 +25,7 @@ ws_patterns=[
 ]
 
 application = ProtocolTypeRouter({
+    "http": get_asgi_application(),
     'websocket': AuthMiddlewareStack(
     URLRouter(ws_patterns)
     )
