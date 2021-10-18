@@ -148,7 +148,9 @@
       console.log(username);
       let con = false;
       const ws = new WebSocket(
-        "ws://localhost:8000/ws" +
+        "ws://"+
+        + window.location.host
+        +"/ws" +
           window.location.pathname +
           "/" +
           first_user +
