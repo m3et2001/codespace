@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+      integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Chat List</title>
+    <script src="{% static 'jquery.js' %}"></script>
+    <style>
+      body {
+        font-family: Poppins;
+      }
+      /* container class CSS */
+      .container {
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+      }
+      @media (min-width: 768px) {
+        .container {
+          width: 750px;
+        }
+      }
+      @media (min-width: 992px) {
+        .container {
+          width: 970px;
+        }
+      }
+      @media (min-width: 1200px) {
+        .container {
+          width: 1170px;
+        }
+      }
+
+      .header {
+        overflow: hidden;
+        background-color: #f1f1f1;
+        padding: 8px 10px;
+        margin-bottom: 3%;
+      }
+
+      /* Style the header links */
+      .header a {
+        float: left;
+        color: black;
+        text-align: center;
+        padding: 7px;
+        text-decoration: none;
+        font-size: 18px;
+        line-height: 25px;
+        border-radius: 4px;
+        padding-top: 2%;
+      }
+
+      /* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
+      .header a.logo {
+        font-size: 25px;
+        font-weight: bold;
+      }
+
+      /* Change the background color on mouse-over
+  .header a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+  /* Style the active/current link*/
+      .active {
+        cursor: default;
+      }
+
+      .header a.active {
+        width: 91%;
+        margin-top: 10%;
+        padding-top: 0%;
+      }
+
+      /* Float the link section to the right */
+      .header-right {
+        float: right;
+      }
+
+      .header a.logo:hover {
+        background-color: #f1f1f1;
+      }
+
+      /* Add media queries for responsiveness */
+      @media screen and (max-width: 500px) {
+        .header a {
+          /* float: none; */
+          display: block;
+          text-align: left;
+          margin-top: 0%;
+        }
+      }
+      @media screen and (max-width: 400px) {
+        .header a.active {
+          width: 91%;
+          margin-top: 0%;
+          padding-top: 0px;
+        }
+      }
+
+      /* right side profile section */
+      .main {
+        display: flex;
+        flex-direction: row;
+      }
+      .name {
+        display: flex;
+        flex-direction: column;
+      }
+      .chat-name {
+        font-size: 12px;
+        margin: 2px 0px 0px 12px;
+        color: #2867b2;
+        font-weight: 700;
+      }
+      .view-profile {
+        font-size: 12px;
+        margin: -5px 0px 0px 5px;
+      }
+
+      @media screen and (max-width: 501px) {
+        .name .view-profile {
+          margin: -5px 0px 0px 12px;
+        }
+      }
+
+      /* MAIN BODY STYLING */
+      .chat-nav {
+        display: flex;
+        flex-direction: row;
+      }
+      .chat-nav-name {
+        display: flex;
+        flex-direction: column;
+      }
+      .chat-nav-chat-name {
+        font-size: 15px;
+        margin: 3px 0px 0px 12px;
+        /* color: #2867b2; */
+        font-weight: 400;
+      }
+      .chat-nav-post {
+        font-size: 13px;
+        margin: 0px 0px 0px 11px;
+        text-decoration: none;
+        color: white;
+      }
+
+      .conversation-outer {
+        background-color: #2867b2;
+        /* display: flex;
+        flex-direction: row; */
+        padding: 1.5% 2% 1% 2%;
+        border-radius: 40px;
+        color: white;
+        flex-basis: 50%;
+      }
+
+      .more a img {
+        float: right;
+        width: 6px;
+        margin: -45px 30px 0px 0px;
+      }
+
+      /* MESSAGES */
+      .messages .client {
+        text-align: left;
+        padding: 0% 55% 0% 2%;
+        margin: 1.5% 0% 1.5% 0%;
+      }
+      .messages .client p {
+        background-color: skyblue;
+        padding: 3% 10% 8% 3%;
+        border-radius: 15px 15px 15px 0px;
+        color: white;
+        font-size: 13px;
+      }
+      .messages .our {
+        text-align: left;
+        padding: 0% 2% 0% 55%;
+        margin: 1.5% 0% 1.5% 0%;
+      }
+      .messages .our p {
+        background-color: #f1f1f1;
+        padding: 3% 10% 8% 3%;
+        border-radius: 15px 15px 0px 15px;
+        font-size: 13px;
+      }
+      .messages .client span {
+        margin: -34px 11px 0px 0px;
+        float: right;
+        font-size: 10px;
+        color: white;
+      }
+      .messages .our span {
+        margin: -32px 11px 0px 12px;
+        float: right;
+        font-size: 10px;
+      }
+
+      @media screen and (max-width: 590px) {
+        .messages .client {
+          text-align: left;
+          padding: 0% 20% 0% 2%;
+          margin: 1.5% 0% 8.5% 0%;
+        }
+        .messages .our {
+          text-align: left;
+          padding: 0% 2% 0% 20%;
+          margin: 1.5% 0% 8.5% 0%;
+        }
+      }
+
+      .type {
+        display: flex;
+        flex-direction: row;
+        background-color: #f1f1f1;
+        padding: 0% 2% 0% 2%;
+        border-radius: 88px;
+      }
+
+      .type .type-emoji img {
+        padding: 35% 0% 0% 23%;
+      }
+
+      .type .type-sep {
+        padding: 12px 0px 0px 14px;
+      }
+
+      .type .type-input {
+        width: 100%;
+      }
+
+      .type .type-send{
+        text-align: right;
+      }
+
+      .type .type-input textarea {
+        background-color: #f1f1f1 !important;
+        border-style: none;
+        padding: 16px 0px 0px 10px;
+        outline: none;
+        width: 95%;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <div class="header">
+      <div class="container">
+        <a href="#" class="logo"
+          ><img src="{% static 'img/Logo.png' %}" alt="logo"
+        /></a>
+        <div class="header-right">
+          <a class="active">
+            <!-- right side profile section -->
+            <div class="main">
+              <div class="image">
+                <img
+                  src="{% static 'img/Profile photo placeholder.png' %}"
+                  alt="profile"
+                />
+              </div>
+              <div class="name">
+                <p class="chat-name">{{other_user}}</p>
+                <p class="view-profile">View profile</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- HEADER -->
+
+    <!-- MAIN BODY -->
+    <div class="container">
+      <div class="conversation-outer">
+        <!-- left portion -->
+        <div class="chat-nav">
+          <div class="image">
+            <img
+              src="{% static 'img/Profile photo placeholder.png' %}"
+              alt="profile"
+            />
+          </div>
+          <div class="chat-nav-name">
+            <p class="chat-nav-chat-name">{{other_user}}</p>
+            <a href="#" class="chat-nav-post">View Post</a>
+          </div>
+        </div>
+
+        <!-- right portion -->
+        <div class="more">
+          <a href="#"><img src="{% static 'img//Menu.png' %}" alt="" /></a>
+        </div>
+      </div>
+
+      {% comment %}
+      ********************************************************************* {%
+      endcomment %}
+      <div class="messages" id="msgbody">
+        {% for m in messages%} {% if username|stringformat:'s' !=
+        m.sender|stringformat:'s' %}
+        <div class="d-flex justify-content-start mb-4">
+          <div class="client">
+            <p>{{m.text}}</p>
+            <span>{{m.created_at}}</span>
+          </div>
+        </div>
+        {% else %}
+        <div class="d-flex justify-content-end mb-4">
+          <div class="our">
+            <p>{{m.text}}</p>
+            <span>{{m.created_at}}</span>
+          </div>
+        </div>
+        {% endif %} {% endfor %}
+      </div>
+
+      {% comment %}
+      ************************************************************************************
+      {% endcomment %}
+      <!-- messages -->
+      {% comment %}
+      <div class="messages">
+        <div class="client">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore,
+            corporis unde quidem recusandae doloribus placeat?
+          </p>
+          <span>12:30 pm</span>
+        </div>
+        <div class="our">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore,
+            corporis unde quidem recusandae doloribus placeat?
+          </p>
+          <span>12:30 pm</span>
+        </div>
+        <div class="client">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore,
+            corporis unde quidem recusandae doloribus placeat?
+          </p>
+          <span>12:30 pm</span>
+        </div>
+        <div class="our">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore,
+            corporis unde quidem recusandae doloribus placeat?
+          </p>
+          <span>12:30 pm</span>
+        </div>
+      </div>
+      {% endcomment %}
+
+      <div class="type">
+        <div class="type-emoji">
+          <a href="#"><img src="./static/img/Smiley.png" alt="" /></a>
+        </div>
+        <div class="type-sep">|</div>
+        <div class="type-input">
+          <!-- {% comment %}
+          <input
+            placeholder="Type a message..."
+            type="Enter a message..."
+            style="
+              background-color: #f1f1f1 !important;
+              border-style: none;
+              padding: 16px 0px 0px 10px;
+              outline: none;
+              width: 95%;
+            "
+          />
+          {% endcomment %} -->
+          <textarea
+            name=""
+            id="message"
+            placeholder="Type your message..."
+          ></textarea>
+        </div>
+        <div class="type-send">
+          <!-- {% comment %}
+          <a onclick="send_data()"
+            ><img src="{% static 'img/Send Icon.png' %}" alt=""
+          /></a>
+          {% endcomment %} -->
+          <button onclick="send_data()">
+            <img src="{% static 'img/Send Icon.png' %}" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var username = "{{username}}";
+
+      var first_user = "{{username}}";
+      console.log(first_user);
+
+      console.log(username);
+      let con = false;
+      const ws = new WebSocket(
+        "ws://localhost:8000/ws" +
+          window.location.pathname +
+          "/" +
+          first_user +
+          "/"
+      );
+      //const ws = new WebSocket('wss://0c70-42-106-36-237.ngrok.io/ws/chat/'+username+'/');
+      ws.onopen = function (e) {
+        console.log("connection established");
+      };
+
+      function send_data() {
+        console.log("insideeeee");
+        data = document.getElementById("message").value;
+        console.log(data);
+        ws.send(
+          JSON.stringify({
+            message: data,
+          })
+        );
+
+        document.getElementById("message").value = "";
+      }
+
+      ws.onmessage = function (e) {
+        console.log("message received");
+        var data = JSON.parse(e.data);
+        console.log("-------------------------------------");
+        console.log("received");
+        console.log(data);
+        console.log(data["sender"]);
+        console.log(first_user);
+
+        console.log(data["message"]);
+        if (data["sender"] == first_user) {
+          let date = new Date(data["time_stamp"]);
+          console.log(date.toDateString());
+          console.log("inside");
+          $("#msgbody").append(
+            "<div class='d-flex justify-content-end mb-4'><div class='our'><p>" +
+              data["message"] +
+              "</p><span >" +
+              date.toDateString() +
+              "</span></div></div>"
+          );
+        } else {
+          $("#msgbody").append(
+            "<div class='d-flex justify-content-start mb-4'><div class='client' ><p>" +
+              data["message"] +
+              "</p><span>" +
+              date.toDateString() +
+              "</span></div></div>"
+          );
+        }
+        //increaseProgress(value , data.payload.status)
+      };
+      ws.onclose = function (e) {
+        console.log("Connection closed");
+      };
+    </script>
+
+    <!-- MAIN BODY -->
+  </body>
+</html>

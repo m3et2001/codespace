@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  {%load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+      integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Chat List</title>
+    <script src="{% static 'jquery.js' %}"></script>
+    <link
+      rel="stylesheet"
+      href="{% static 'chat-conversation/css/style.css' %}"
+    />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <div class="header">
+      <div class="container">
+        <a href="#" class="logo"
+          ><img src="{% static 'chat-conversation/img/Logo.png' %}" alt="logo"
+        /></a>
+        <div class="header-right">
+          <a class="active">
+            <!-- right side profile section -->
+            <div class="main">
+              <div class="image">
+                <img
+                  src="{% static 'chat-conversation/img/Profile photo placeholder.png' %}"
+                  alt="profile"
+                />
+              </div>
+              <div class="name">
+                <p class="chat-name">{{username}}</p>
+                <p class="view-profile">View profile</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- HEADER -->
+
+    <!-- MAIN BODY -->
+    <div class="container">
+      <div class="conversation-outer">
+        <!-- left portion -->
+        <div class="chat-nav">
+          <div class="image">
+            <img
+              src="{% static 'chat-conversation/img/Profile photo placeholder.png' %}"
+              alt="profile"
+            />
+          </div>
+          <div class="chat-nav-name">
+            <p class="chat-nav-chat-name">{{other_user}}</p>
+            <a href="#" class="chat-nav-post">View Post</a>
+          </div>
+        </div>
+
+        <!-- right portion -->
+        <div class="more">
+          <a href="#"
+            ><img src="{% static 'chat-conversation/img/Menu.png' %}" alt=""
+          /></a>
+        </div>
+      </div>
+
+      <!-- messages -->
+      <div class="messages" id="msgbody">
+          {% for m in messages%}
+                 {% if username|stringformat:'s' != m.sender|stringformat:'s' %}
+                 <!-- <div class="d-flex justify-content-start mb-4"> -->
+                   <div class="client">
+                     <span class="client-name-span">{{m.sender}}</span>
+                     <p>{{m.text}}</p>
+                     <span class="client-time">{{m.created_at}}</span>
+                   </div>
+                 <!-- </div> -->
+                 {% else %}
+                 <!-- <div class="d-flex justify-content-end mb-4"> -->
+                   <div class="our">
+                     <span class="our-name-span">{{m.sender}}</span>
+                     <p>{{m.text}}</p>
+                     <span class="our-time">{{m.created_at}}</span>
+                   </div>
+                 <!-- </div> -->
+                 {% endif %}
+               
+                 {% endfor %}
+      </div>
+
+      <div class="type">
+        <div class="type-emoji">
+          <a><img src="{% static 'chat-conversation/img/Smiley.png' %}" alt=""></a>
+        </div>
+        <div class="type-sep">|</div>
+        <div class="type-input">
+          <!-- {% comment %}
+          <input
+            placeholder="Type a message..."
+            type="Enter a message..."/>
+          {% endcomment %} -->
+          <textarea
+            name=""
+            id="message"
+            placeholder="Type your message..."
+            class="msg"
+          ></textarea>
+        </div>
+        <div class="type-send">
+          <img
+            src="{% static 'chat-conversation/img/Send Icon.png' %}"
+            onclick="send_data()"
+            alt=""/>
+          <!-- {% comment %}
+          <button onclick="send_data()">
+            <img src="{% static 'img/Send Icon.png' %}">
+          </button>
+          {% endcomment %} -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // var objDiv = getElementsByClassName("messages")[0];
+      // objDiv.scrollTop = objDiv.scrollHeight;
+      // window.setInterval(function () {
+      //   var elem = document.getElementsByClassName("messages")[0];
+      //   elem.scrollTop = elem.scrollHeight;
+      // }, 10);
+
+      var username = "{{username}}";
+
+      var first_user = "{{username}}";
+      console.log(first_user);
+
+      console.log(username);
+      let con = false;
+      const ws = new WebSocket(
+        "ws://localhost:8000/ws" +
+          window.location.pathname +
+          "/" +
+          first_user +
+          "/"
+      );
+      //const ws = new WebSocket('wss://0c70-42-106-36-237.ngrok.io/ws/chat/'+username+'/');
+      ws.onopen = function (e) {
+        console.log("connection established");
+      };
+
+      function send_data() {
+        console.log("insideeeee");
+        data = document.getElementById("message").value;
+        console.log(data);
+        ws.send(
+          JSON.stringify({
+            message: data,
+          })
+        );
+
+        document.getElementById("message").value = "";
+      }
+
+      ws.onmessage = function (e) {
+        console.log("message received");
+        var data = JSON.parse(e.data);
+        var option= {year:'numeric', month:'short', day:'numeric',time:'short'}
+        var date= new Date();
+        console.log("-------------------------------------");
+        console.log("received");
+        console.log(data);
+        console.log(data["sender"]);
+        console.log(first_user);
+        console.log(data["message"]);
+        if (data["sender"] == first_user) {
+          // let date = new Date(data["time_stamp"]);
+          console.log(date.toDateString());
+          console.log(data.toT);
+          console.log("inside");
+          $("#msgbody").append(
+            "<div class='our'><span class='our-name-span'>" +
+              data["sender"] +
+              "</span><p>" +
+              data["message"] +
+              "</p><span class=our-time>" +
+                date.toLocaleTimeString('en-US',option) +
+              "</span></div>"
+          );
+        } else {
+          // let date = new Date(data["time_stamp"]);
+          $("#msgbody").append(
+            "<div class='client'><span class='client-name-span'>" +
+              data["sender"] +
+              "</span><p>" +
+              data["message"] +
+              "</p><span class=client-time>" +
+                date.toLocaleTimeString('en-US',option) +
+              "</span></div>"
+          );
+        }
+        //increaseProgress(value , data.payload.status)
+      };
+      ws.onclose = function (e) {
+        console.log("Connection closed");
+      };
+    </script>
+
+    <script>
+      function validateMessage(){
+        let msg_box = document.getElementsByClassName('msg')[0];
+        if (msg_box.value === "" || msg_box.value === null) {
+          alert("Please type a message!");
+          console.log("nai gayo");
+          // return false;
+        }
+        else{
+          console.log("alright");
+        }
+      }
+    </script>
+    <!-- script for the emoji tray -->
+    <script src="https://cdn.jsdelivr.net/npm/emoji-button@latest/dist/index.min.js"></script>
+    <script>
+      var input = document.getElementsByClassName('type-emoji')[0];
+      var input_text = document.getElementsByClassName('msg')[0];
+      var picker = new EmojiButton({
+        position: 'top-start'
+      })
+      picker.on('emoji', function(emoji){
+        input_text.value += emoji;
+      })
+      input.addEventListener('click', function(){
+        picker.pickerVisible ? picker.hidePicker() : picker.showPicker(input);
+      })
+    </script>
+
+    <!-- MAIN BODY -->
+  </body>
+</html>

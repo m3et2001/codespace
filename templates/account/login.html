@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+{% load socialaccount %}
+<html lang="en">
+{% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- poppins font family URL -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'sign-in/css/style.css' %}" />
+    <title>Sign in</title>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+    <div class="header">
+      <div class="container">
+        <a href="#" class="logo"
+          ><img src="{% static 'sign-in/img/Logo.png' %}" alt="logo"
+        /></a>
+        <div class="header-right">
+          <a class="active" href="{% url 'signup' %}">Sign Up</a>
+        </div>
+      </div>
+    </div>
+    <!-- HEADER -->
+{% if messages %}
+  {% for m in messages%}
+  <p class="container error_messages">{{m}}</p>
+  {% endfor %}
+  {% endif %}
+    <!-- BODY -->
+    <form  id="form-submit" class="container outer-whole" method="post" action="{% url 'signin' %}">
+      <!-- form -->
+      {% csrf_token %}
+      <div class="outer-whole-left">
+        <p class="culprit-text">Sign in <span>Sign in</span></p>
+        <p class="culprit-text-changed">Sign in</p>
+        <label for="email-phone" class="email__label"
+          >Email or Username</label
+        >
+        <input
+          name="email-phone"
+          class="bg-grey email_phone"
+          type="text"
+          placeholder="Email or Username"
+          onclick="showAllFields()"
+        />
+        <label for="password" class="password__label">Password</label>
+        <input
+          name="password"
+          class="bg-grey"
+          type="password"
+          placeholder="Password"
+          onclick="showAllFields()"
+        />
+        <span class="font-12"
+          ><input type="checkbox" onclick="showPassword()" /><span class="color-grey"
+            
+          >
+            Show password</span
+          ></span
+        >
+        <a href="{% url 'forgotpassword' %}" class="forgot-password">Forgot password?</a>
+        <div class="signin-both-ways">
+          <a href="#" onclick="myFunction()" class="signin-btn">Sign in</a>
+          <p class="or">OR</p>
+          <a href="{% provider_login_url 'google' %}" class="singin-with-google"
+            ><img src="{% static 'sign-in/img/google-logo-9824.png' %}" alt="" />
+            <p>Sign in with google</p></a
+          >
+        </div>
+      </div>
+      <!-- image -->
+      <div class="outer-whole-right">
+        <img
+          class="right-img"
+          src="{% static 'sign-in/img/imageonline-co-overlayed-image.png' %}"
+          alt=""
+        />
+      </div>
+    </div>
+    </form>
+    <!-- BODY -->
+    <script src="{% static 'sign-in/js/index.js' %}"></script>
+    <script>
+    function myFunction() {
+                document.getElementById("form-submit").submit();
+            }
+    </script>
+
+  </body>
+</html>

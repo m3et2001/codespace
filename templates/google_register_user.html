@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+  <script src="{% static 'google_registration/js/jquery.js' %}"></script>
+
+<script>
+$(document).ready(function(){
+    
+$('#username').change(function(){
+        console.log("username checking");
+        var username = $(this).val();
+        console.log(username)
+        let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        mydata = { csrfmiddlewaretoken: csrftoken , 'username':username };
+
+        $.ajax({
+                url: '/check-username' ,
+                method: "POST",
+                data: mydata,
+                success: function (data)
+                    {
+                        if(data['status']=='success')
+                        {
+                            console.log("successful");
+                            console.log(data);
+
+                        }
+                        else
+                        {
+                            console.log("Not available");
+                            alert("Username Not Available");
+                            $('#username').val('');
+                        }
+                    },
+                error: function (data)
+                    {
+                        console.log("Error");
+                    }
+                });
+           });
+
+$('#email').change(function(){
+        var email = $(this).val();
+        console.log(email)
+        let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        mydata = { csrfmiddlewaretoken: csrftoken , 'email':email };
+
+        $.ajax({
+                url: '/check-email' ,
+                method: "POST",
+                data: mydata,
+                success: function (data)
+                    {
+                        if(data['status']=='success')
+                        {
+                            console.log("successful");
+                            console.log(data);
+                        }
+                        else
+                        {
+                            console.log("Not available");
+                            alert("Email-id Not Available");
+                                $('#email').val('');
+
+                        }
+                    },
+                error: function (data)
+                    {
+                        console.log("Error");
+                    }
+                });
+           });
+
+    $('#pincode').change(function(){
+        var pin = $(this).val();
+        let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        mydata = { csrfmiddlewaretoken: csrftoken , 'pin':pin };
+
+        $.ajax({
+                url: 'pincode' ,
+                method: "POST",
+                data: mydata,
+                success: function (data)
+                    {
+                        if(data['status']=='Success')
+                        {
+                                $("#city").val(data['city']);
+                                $("#state").val(data['state']);
+                        }
+                        else
+                        {
+                          
+                            alert("Please enter valid pincode");
+                            }
+                    },
+                error: function (data)
+                    {
+                        console.log("Error");
+                    }
+                });
+    });
+
+
+
+
+})
+</script>
+
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{% static 'google_registration/css/style.css' %}" />
+  <!-- poppins font family URL -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins" rel=>
+  <link rel=>
+  <title>Sign up</title>
+</head>
+
+<body>
+  <!-- HEADER -->
+
+  <div class="header">
+    <div class="container">
+      <a href="#default" class="logo"><img src="{% static 'google_registration/img/Logo.png' %}" alt="logo" /></a>
+      <!--<div class="header-right">
+        <a class="active" href="accounts/login">Sign in</a>
+      </div>-->
+    </div>
+  </div>
+  <!-- HEADER -->
+
+  <!-- BODY -->
+  <!--{% if messages %}
+  {% for m in messages%}
+  {{m}}
+  {% endfor %}
+  {% endif %}-->
+  <form class="container outer-whole" method='post' action="{% url 'googleregister' %}">
+    <!-- form -->
+    {% csrf_token %}
+    <div class="outer-whole-left">
+      <p class="culprit-text">{{firstname}} Complete Your Profile To Continue </p>
+      
+      <div class="names">
+      <div class="names-subfiled">
+        <label for="first" class="fn__label">First name </label>
+        <input name="first" type="text" class="first-name" placeholder="First name" value='{{firstname}}' onclick="showAllFieldsGoogleRegister()"/>
+      </div>
+      <div class="names-subfield">
+        <label for="last" class="ln__label">Last name</label>
+        <input name="last" type="text" class="last-name" placeholder="Last name" value='{{lastname}}' onclick="showAllFieldsGoogleRegister()"/>
+      </div>
+      </div>
+
+      <!--<label for="phone" class="phone__label">Phone number</label>
+      <input name="phone" id="phone" class="bg-grey" type="text" placeholder="+91 | Phone number" onclick="showAllFieldsGoogleRegister()"/>
+      <label for="email" class="email__label">Email</label>
+      <input name="email" id="email" class="bg-grey" type="text" placeholder="Email" onclick="showAllFieldsGoogleRegister()"/>
+      <label for="username" class="username__label">Username</label>
+      <input name="username" id="username" class="bg-grey" type="text" placeholder="Username" onclick="showAllFieldsGoogleRegister()"/>
+      <label for="password" class="password__label">Password</label>
+      <input name="password" id="password" class="bg-grey" type="password" placeholder="Password" onclick="showAllFieldsGoogleRegister()"/>
+      <label for="confirm_password" class="confirm_password__label">Confirm Password</label>
+      <input name="confirm_password" id="confirm_password" class="bg-grey" type="password" placeholder="Confirm Password" onclick="showAllFieldsGoogleRegister()"/>
+        -->
+      <div class="gen-bir">
+        <a  class="male" onclick="maleBlue()"/> <button class="male-blue" disabled> Male</button></a>
+        <a class="female" onclick="femaleBlue()"/> <button class="female-blue" disabled> Female</button></a>
+        <div class="names-subfield">
+          <label for="birthday" class="birthday__label">Birthday</label>
+          <input type="date" name="birthday" class="birthday" placeholder="Birthdate" onclick="showAllFieldsGoogleRegister()"/>
+        </div>
+        <input id="set-male" type="hidden" value="" name='male' class="male-blue" />
+        <input id="set-female" type="hidden" value="" name='female' class="female-blue" />
+        
+      </div>
+
+      <div class="state-reg">
+      <div class="names-subfield">
+          <label for="region" class="region__label">Pincode</label>
+          <input name="region" id='pincode' type="text" class="region" placeholder="Pincode" onclick="showAllFieldsGoogleRegister()"/>
+        </div>
+        <div class="names-subfield">
+          <label for="city" class="city__label">City</label>
+          <input name="city" type="text" id='city' class="city" placeholder="City" onclick="showAllFieldsGoogleRegister()"/>
+        </div>
+        <div class="names-subfield">
+          <label for="state" class="state__label">State</label>
+          <input name="state" type="text" id='state' class="state" placeholder="State" onclick="showAllFieldsGoogleRegister()"/>
+        </div>
+        
+      </div>
+
+      <div class="signin-both-ways">
+        <input type='Submit' class="signin-btn" value='Submit'/>
+        <!-- <p class="or">OR</p> -->
+        
+      </div>
+    </div>
+    <!-- image -->
+    <div class="outer-whole-right">
+      <img class="right-img" src="{% static 'google_registration/img/imageonline-co-overlayed-image (1).png' %}" alt=""/>
+    </div>
+  </form>
+  <!-- BODY -->
+
+  <script src="{% static 'sign-up/js/index.js' %}"></script>
+</body>
+
+</html>
