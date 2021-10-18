@@ -17,7 +17,7 @@ from FTC_users.consumers import *
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'FTC_project.settings')
 django.setup()
-application = get_asgi_application()
+# application = get_asgi_application()
 
 ws_patterns=[
 
