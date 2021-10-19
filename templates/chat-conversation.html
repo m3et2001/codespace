@@ -149,7 +149,8 @@
       let con = false;
       var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
       const ws = new WebSocket(
-        ws_scheme +"://f-t-c.herokuapp.com/ws" +
+//         ws_scheme +
+        "wss://f-t-c.herokuapp.com/ws" +
           window.location.pathname +
           "/" +
           first_user +
