@@ -117,15 +117,19 @@ def send_mail_user(email,token):
 def emailverification(request,token):
     #try:
     print(token)
+    sys.stdout.flush()
     pf=Profile.objects.filter(token=token).first()
     if not pf.verify :
         pf.verify=True
         pf.save()
         print(pf.user)
+        sys.stdout.flush()
         username=request.session.get('username')
         print('this is session', username)
+        sys.stdout.flush()
         firstname=request.session.get('firstname')
         print('this is session', firstname)
+        sys.stdout.flush()
         lastname=request.session.get('lastname')
         email=request.session.get('email')
         gender=request.session.get('gender')
@@ -140,7 +144,9 @@ def emailverification(request,token):
         user_object.set_password(password)
         user_object.save()
         print("user successfully created")
+        sys.stdout.flush()
         print(request.session.get('username'))
+        sys.stdout.flush()
         del request.session['username']
         del request.session['firstname']
         del request.session['lastname']
