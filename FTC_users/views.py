@@ -218,6 +218,8 @@ def chatoption(request):
 
 def googleregister(request):
     if request.method == 'POST':
+        print('POST')
+        sys.stdout.flush()
         print("registering user")
         username=request.user.username
         email=request.user.email
@@ -242,11 +244,18 @@ def googleregister(request):
         return redirect('chooseuser')
 
     else:
+        print('ELSE')
         #redirect(provider_login_url 'google')
         print(request.user)
+        sys.stdout.flush()
         username=request.user.username
+        print(username)
+        sys.stdout.flush()
         email=request.user.email
+        print(email)
+        sys.stdout.flush()
         user_availability=UserSignup.objects.filter(Email=email)
+        print(user_availability)
         if user_availability :
             return redirect('chooseuser')
         else:
