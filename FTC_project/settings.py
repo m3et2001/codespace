@@ -106,12 +106,12 @@ db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
 # DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels.layers.InMemoryChannelLayer",
-#         #"CONFIG" : {
-#         #    'hosts' : [('127.0.0.1',6379)],
-#         #}
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+        #"CONFIG" : {
+        #    'hosts' : [('127.0.0.1',6379)],
+        #}
 
 #     }
 # }
@@ -124,14 +124,14 @@ DATABASES['default'].update(db_from_env)
 #     },
 # }
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
-        },
-    },
-}
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+#         },
+#     },
+# }
 
 
 # Password validation
