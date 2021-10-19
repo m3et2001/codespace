@@ -111,10 +111,10 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels.layers.InMemoryChannelLayer",
         #"CONFIG" : {
         #    'hosts' : [('127.0.0.1',6379)],
-        }
+#         }
+    }
+}
 
-#     }
-# }
 # CHANNEL_LAYERS = {
 #     "default": {
 #         "BACKEND": "asgi_redis.RedisChannelLayer",
