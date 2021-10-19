@@ -12,7 +12,7 @@ import django
 django.setup()
 from channels.auth import AuthMiddlewareStack
 from django.core.asgi import get_asgi_application
-from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.routing import ProtocolTypeRouter, URLRouter,get_default_application
 from django.urls import path
 from FTC_users.consumers import *
 
@@ -26,9 +26,11 @@ ws_patterns=[
    path('ws/personal-chat/<slug:second_user>/<slug:first_user>/', PersonalChat.as_asgi())
 ]
 
-application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
-    'websocket': AuthMiddlewareStack(
-    URLRouter(ws_patterns)
-    )
-})
+# application = ProtocolTypeRouter({
+#     "http": get_asgi_application(),
+#     'websocket': AuthMiddlewareStack(
+#     URLRouter(ws_patterns)
+#     )
+# })
+
+application = get_default_application()
