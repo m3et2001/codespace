@@ -26,11 +26,11 @@ ws_patterns=[
    path('ws/personal-chat/<slug:second_user>/<slug:first_user>/', PersonalChat.as_asgi())
 ]
 
-# application = ProtocolTypeRouter({
-#     "http": get_asgi_application(),
-#     'websocket': AuthMiddlewareStack(
-#     URLRouter(ws_patterns)
-#     )
-# })
+application = ProtocolTypeRouter({
+    "http": get_asgi_application(),
+    'websocket': AuthMiddlewareStack(
+    URLRouter(ws_patterns)
+    )
+})
 
-application = get_default_application()
+# application = get_default_application()
