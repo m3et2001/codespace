@@ -205,6 +205,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 LOGIN_REDIRECT_URL='googleregister'
 ACCOUNT_LOGOUT_REDIRECT_URL='account_signout'
+ACCOUNT_DEFAULT_HTTP_PROTOCOL='https'
 #509121360883-1u78elmpdduufgh9dlqrpajqv08j63gg.apps.googleusercontent.com
 #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
 
