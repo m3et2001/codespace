@@ -117,7 +117,7 @@ DATABASES['default'].update(db_from_env)
 # }
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "BACKEND": "asgi_redis.RedisChannelLayer",
         "CONFIG": {
             "hosts": [("redis-16152.c264.ap-south-1-1.ec2.cloud.redislabs.com", 16152)],
         },
