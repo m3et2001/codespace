@@ -115,11 +115,20 @@ DATABASES['default'].update(db_from_env)
 
 #     }
 # }
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "asgi_redis.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("redis-16152.c264.ap-south-1-1.ec2.cloud.redislabs.com", 16152)],
+#         },
+#     },
+# }
+
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("redis-16152.c264.ap-south-1-1.ec2.cloud.redislabs.com", 16152)],
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
         },
     },
 }
