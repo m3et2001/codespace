@@ -119,7 +119,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+            "hosts": [("redis-16152.c264.ap-south-1-1.ec2.cloud.redislabs.com", 16152)],
         },
     },
 }
