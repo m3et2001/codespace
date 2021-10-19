@@ -28,7 +28,7 @@
     <div class="header">
       <div class="container">
         <a href="#" class="logo"
-          ><img src="{% static 'chat-conversation/img/Logo.png' %}" alt="logo"
+          ><img src="{% static 'chat-conversation/img/FTC_Logo-1.png' %}" alt="logo"
         /></a>
         <div class="header-right">
           <a class="active">
@@ -50,6 +50,18 @@
       </div>
     </div>
     <!-- HEADER -->
+
+    <!-- warning red -->
+  <!-- <div class="alert danger container">
+    <span class="closebtn" onclick="this.parentElement.style.opacity=0; this.parentElement.style.transition='1s all linear'; setTimeout(function () {document.getElementsByClassName('danger')[0].style.display='none';},1500)">&times;</span> 
+    <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+  </div> -->
+
+  <!-- warning green -->
+  <!-- <div class="alert success container">
+    <span class="closebtn" onclick="this.parentElement.style.opacity=0; this.parentElement.style.transition='1s all linear'; setTimeout(function () {document.getElementsByClassName('success')[0].style.display='none';},1500)">&times;</span> 
+    <strong>Success!</strong> Indicates a successful or positive action.
+  </div> -->
 
     <!-- MAIN BODY -->
     <div class="container">
@@ -118,7 +130,7 @@
             class="msg"
           ></textarea>
         </div>
-        <div class="type-send">
+        <div class="type-send" onclick="scrollEnd()">
           <img
             src="{% static 'chat-conversation/img/Send Icon.png' %}"
             onclick="send_data()"
@@ -147,16 +159,21 @@
 
       console.log(username);
       let con = false;
-      var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
       const ws = new WebSocket(
-//         ws_scheme +
-        "wss://f-t-c.herokuapp.com/ws" +
+         ws_scheme +
+        "://f-t-c.herokuapp.com/ws" +
           window.location.pathname +
           "/" +
           first_user +
           "/"
       );
-      console.log(ws);
+      {% comment %} const ws = new WebSocket(
+        "ws://localhost:8000/ws" +
+          window.location.pathname +
+          "/" +
+          first_user +
+          "/"
+      ); {% endcomment %}
       //const ws = new WebSocket('wss://0c70-42-106-36-237.ngrok.io/ws/chat/'+username+'/');
       ws.onopen = function (e) {
         console.log("connection established");
@@ -248,6 +265,17 @@
       })
     </script>
 
+    <script>
+      function scrollEnd() {
+        var elem = document.getElementsByClassName('messages')[0];
+        elem.scrollTop = elem.scrollHeight;
+      }
+      window.onload = scrollEnd;
+      // window.setInterval(function() {
+      //   var elem = document.getElementsByClassName('messages')[0];
+      //   elem.scrollTop = elem.scrollHeight;
+      // }, 1000);
+    </script>
     <!-- MAIN BODY -->
   </body>
 </html>
