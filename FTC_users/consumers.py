@@ -46,11 +46,11 @@ class PersonalChat(WebsocketConsumer):
         print(self.username)
         sender=self.username
         print("data:",data)
-        now=datetime.now()
-        print(now)
+#         now=datetime.now()
+#         print(now)
         data_dict={
             'text':data,
-            'time_stamp':now
+#             'time_stamp':now
         }
         self.store_message(data_dict)
         print(self.room_group_name)
@@ -60,7 +60,7 @@ class PersonalChat(WebsocketConsumer):
                 'type':'send.order',
                 'value':data,
                 'sender':sender,
-                'time_stamp':now
+#                 'time_stamp':now
                 
             }
         )
@@ -70,12 +70,12 @@ class PersonalChat(WebsocketConsumer):
         print (event['value'])
         message=event['value']
         sender=event['sender']
-        time_stamp=str(event['time_stamp'])
+#         time_stamp=str(event['time_stamp'])
         self.send(text_data=json.dumps({
                 
                 'message':message,
                 'sender':sender,
-                'time_stamp':time_stamp
+#                 'time_stamp':time_stamp
         }))
     
     def websocket_disconnect(self,*args,**kwargs):
@@ -91,7 +91,8 @@ class PersonalChat(WebsocketConsumer):
         sender=self.scope['url_route']['kwargs']['first_user']
         first_user=User.objects.get(username=sender)
         print(text['text'])
-        now=text['time_stamp']
+#         now=text['time_stamp']
+        now=datetime.now()
         Message.objects.create(
             thread=self.thread_obj,
             sender=first_user,
